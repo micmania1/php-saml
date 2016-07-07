@@ -92,6 +92,15 @@ class OneLogin_Saml2_LogoutRequest
     {$sessionIndexStr}
 </samlp:LogoutRequest>
 LOGOUTREQUEST;
+
+            // Sign the request
+            $security = $this->_settings->getSecurityData();
+            $logoutRequest = OneLogin_Saml2_Utils::addSign(
+                $logoutRequest,
+                $spData['privateKey'],
+                $spData['x509cert'],
+                $security['signatureAlgorithm']
+            );
         } else {
             $decoded = base64_decode($request);
             // We try to inflate
